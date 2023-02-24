@@ -1,0 +1,17 @@
+beauty_5:
+  train_file: '../data/beauty_5/train.csv'
+  test_file: '../data/beauty_5/test.csv'
+  valid_file: '../data/beauty_5/valid.csv'
+  item_cate_dict_file: '../data/beauty_5/item_cate_dict.pkl'  # item->cate字典
+  statical_dict_file: '../data/beauty_5/statical_dict.pkl'   # 统计
+
+  user_f_num: 3  # 用户和上下文特征
+  other_seq_num: 0  # 其他序列特征
+  other_f_num: 0   # 除了uid、iid、cid之外的其他上下文特征
+  label_type: 2    # label是[0]还是[0,1]
+
+  sample_size: 1   # 每个用户采样最后10个
+  seq_max_len: 20  # 历史序列长度
+  valid_size: 0.1
+  test_size: 0.1
+  padding_type: 'pre'  # pre|suf  如果序列长度不够，需要补充数据

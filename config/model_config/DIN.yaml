@@ -1,0 +1,46 @@
+din_electronics:
+  model_root: '../checkpoints/electronics_5/'
+  model_id: din_electronics
+  dataset_id: electronics_5
+  model_name: DIN
+
+  lr: 0.002
+  reg_lambda: 1e-4
+  emb_dim: 18
+  batch_size: 128
+  epochs: 100
+  seed: 20002
+
+  use_neg_seq: False # 负历史序列
+
+
+din_books:
+  model_root: '../checkpoints/books_5/'
+  model_id: din_books
+  dataset_id: books_5
+  model_name: DIN
+
+  lr: 1e-3
+  reg_lambda: 1e-4
+  emb_dim: 18
+  batch_size: 128
+  epochs: 100
+  seed: 20001
+
+  use_neg_seq: False # 负历史序列
+
+
+din_beauty:
+  model_root: '../checkpoints/beauty_5/'
+  model_id: din_beauty
+  dataset_id: beauty_5
+  model_name: DIN
+
+  lr: 1e-3
+  reg_lambda: 1e-4
+  emb_dim: 18
+  batch_size: 128
+  epochs: 100
+  seed: 20004
+
+  use_neg_seq: False # 负历史序列

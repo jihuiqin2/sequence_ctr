@@ -1,0 +1,45 @@
+dnn_electronics:
+  model_root: '../checkpoints/electronics_5/'
+  model_id: 'dnn_electronics'
+  dataset_id: 'electronics_5'
+  model_name: DNN
+
+  lr: 1e-3
+  reg_lambda: 1e-4
+  emb_dim: 18
+  batch_size: 128
+  epochs: 100
+  seed: 20004
+
+  use_neg_seq: False # 负历史序列
+
+dnn_books:
+  model_root: '../checkpoints/books_5/'
+  model_id: 'dnn_books'
+  dataset_id: 'books_5'
+  model_name: DNN
+
+  lr: 1e-3
+  reg_lambda: 1e-4
+  emb_dim: 18
+  batch_size: 128
+  epochs: 100
+  seed: 20001
+
+  use_neg_seq: False # 负历史序列
+
+
+dnn_beauty:
+  model_root: '../checkpoints/beauty_5/'
+  model_id: 'dnn_beauty'
+  dataset_id: 'beauty_5'
+  model_name: DNN
+
+  lr: 1e-3
+  reg_lambda: 1e-4
+  emb_dim: 18
+  batch_size: 128
+  epochs: 100
+  seed: 20001
+
+  use_neg_seq: False # 负历史序列

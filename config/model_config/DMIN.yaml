@@ -1,0 +1,47 @@
+dmin_electronics:
+  model_root: '../checkpoints/electronics_5/'
+  model_id: 'dmin_electronics'
+  dataset_id: 'electronics_5'
+  model_name: DMIN
+
+  lr: 0.002
+  reg_lambda: 1e-4
+  emb_dim: 18
+  batch_size: 128
+  epochs: 100
+  seed: 30004
+
+  use_neg_seq: True # 负历史序列
+  head_num: 4
+
+dmin_books:
+  model_root: '../checkpoints/books_5/'
+  model_id: 'dmin_books'
+  dataset_id: 'books_5'
+  model_name: DMIN
+
+  lr: 1e-3
+  reg_lambda: 1e-4
+  emb_dim: 18
+  batch_size: 128
+  epochs: 100
+  seed: 20001
+
+  use_neg_seq: True # 负历史序列
+  head_num: 4
+
+dmin_beauty:
+  model_root: '../checkpoints/beauty_5/'
+  model_id: 'dmin_beauty'
+  dataset_id: 'beauty_5'
+  model_name: DMIN
+
+  lr: 1e-3
+  reg_lambda: 1e-4
+  emb_dim: 18
+  batch_size: 128
+  epochs: 100
+  seed: 20001
+
+  use_neg_seq: True # 负历史序列
+  head_num: 4

@@ -1,0 +1,44 @@
+widedeep_electronics:
+  model_root: '../checkpoints/electronics_5/'
+  model_id: 'widedeep_electronics'
+  dataset_id: 'electronics_5'
+  model_name: WideDeep
+
+  lr: 1e-3
+  reg_lambda: 1e-4
+  emb_dim: 18
+  batch_size: 128
+  epochs: 100
+  seed: 20004
+
+  use_neg_seq: False # 负历史序列
+
+widedeep_books:
+  model_root: '../checkpoints/books/'
+  model_id: 'widedeep_books'
+  dataset_id: 'books'
+  model_name: WideDeep
+
+  lr: 1e-3
+  reg_lambda: 1e-4
+  emb_dim: 18
+  batch_size: 128
+  epochs: 100
+  seed: 20001
+
+  use_neg_seq: False # 负历史序列
+
+widedeep_beauty:
+  model_root: '../checkpoints/beauty_5/'
+  model_id: 'widedeep_beauty'
+  dataset_id: 'beauty_5'
+  model_name: WideDeep
+
+  lr: 1e-3
+  reg_lambda: 1e-4
+  emb_dim: 18
+  batch_size: 128
+  epochs: 100
+  seed: 20004
+
+  use_neg_seq: False # 负历史序列

@@ -1,0 +1,17 @@
+books_5:
+  train_file: '../data/books_5/train.csv'
+  test_file: '../data/books_5/test.csv'
+  valid_file: '../data/books_5/valid.csv'
+  item_cate_dict_file: '../data/books_5/item_cate_dict.pkl'
+  statical_dict_file: '../data/books_5/statical_dict.pkl'
+
+  user_f_num: 3
+  other_seq_num: 0
+  other_f_num: 0
+  label_type: 2
+
+  sample_size: 1   # 每个用户采样最后1个
+  seq_max_len: 20  # 历史序列长度   dien中100  mian中10|20|80
+  valid_size: 0.1
+  test_size: 0.1
+  padding_type: 'pre'  # pre|suf  如果序列长度不够，需要补充数据
