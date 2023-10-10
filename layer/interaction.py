@@ -12,6 +12,7 @@ from tensorflow.python.keras.layers import Layer, MaxPooling2D, Conv2D, Dropout,
 from tensorflow.python.keras.regularizers import l2
 
 from layer.utils import reduce_mean
+from layer.utils import reduce_sum
 
 
 class SENETLayer(Layer):
@@ -53,6 +54,93 @@ class SENETLayer(Layer):
         split_V = tf.split(V, self.filed_size, axis=1)  # 转为list sl个[b,1,ei]
 
         return split_V
+
+
+class SENETLayer2(Layer):
+    def __init__(self, reduction_ratio=3, seed=1024, **kwargs):
+        self.reduction_ratio = reduction_ratio
+
+        self.seed = seed
+        super(SENETLayer2, self).__init__(**kwargs)
+
+    def build(self, input_shape):  # [b,sl,ei]
+
+        self.filed_size = input_shape[1]
+        self.embedding_size = input_shape[-1]
+        reduction_size = 1
+
+        self.W_1 = self.add_weight(shape=(
+            self.filed_size, reduction_size), initializer=glorot_normal(seed=self.seed), name="W_1")
+        self.W_2 = self.add_weight(shape=(
+            reduction_size, self.filed_size), initializer=glorot_normal(seed=self.seed), name="W_2")
+
+        self.tensordot = Lambda(
+            lambda x: tf.tensordot(x[0], x[1], axes=(-1, 0)))
+
+        # Be sure to call this somewhere!
+        super(SENETLayer2, self).build(input_shape)
+
+    def call(self, inputs, **kwargs):
+        Z = reduce_mean(inputs, axis=-1)  # [b,sl]
+        A_1 = tf.nn.relu(self.tensordot([Z, self.W_1]))
+        A_2 = tf.nn.relu(self.tensordot([A_1, self.W_2]))
+        V = tf.multiply(inputs, tf.expand_dims(A_2, axis=2))  # [b,sl,ei]
+
+        return V
+
+
+class SKNETLayer2(Layer):
+    def __init__(self, reduction_ratio=3, seed=1024, **kwargs):
+        self.reduction_ratio = reduction_ratio
+
+        self.seed = seed
+        super(SKNETLayer2, self).__init__(**kwargs)
+
+    def build(self, input_shape):  # [b,sl,ei]
+
+        self.filed_size = input_shape[1]
+        self.embedding_size = input_shape[-1]
+        reduction_size = 1
+
+        self.W_1 = self.add_weight(shape=(
+            self.filed_size, reduction_size), initializer=glorot_normal(seed=self.seed), name="W_1")
+        self.W_2 = self.add_weight(shape=(
+            reduction_size, self.filed_size), initializer=glorot_normal(seed=self.seed), name="W_2")
+
+        self.W_4 = self.add_weight(shape=(
+            self.embedding_size, self.embedding_size), initializer=glorot_normal(seed=self.seed), name="W_4")
+        self.W_5 = self.add_weight(shape=(
+            self.embedding_size, self.embedding_size), initializer=glorot_normal(seed=self.seed), name="W_5")
+
+        self.tensordot = Lambda(
+            lambda x: tf.tensordot(x[0], x[1], axes=(-1, 0)))
+
+        self.projection_a = self.add_weight(shape=(self.embedding_size, 1),
+                                            initializer=glorot_normal(seed=12006), name="projection_a")
+        self.projection_b = self.add_weight(shape=(self.embedding_size, 1),
+                                            initializer=glorot_normal(seed=12006), name="projection_b")
+
+        # Be sure to call this somewhere!
+        super(SKNETLayer2, self).build(input_shape)
+
+    def call(self, inputs, **kwargs):
+        inputs1 = tf.nn.relu(self.tensordot([inputs, self.W_4]))
+        inputs2 = tf.nn.relu(self.tensordot([inputs, self.W_5]))
+        inputs_a = inputs1 + inputs2
+        Z = reduce_mean(inputs_a, axis=-1)  # [b,sl]
+        A_1 = tf.nn.relu(self.tensordot([Z, self.W_1]))
+        A_2 = tf.nn.relu(self.tensordot([A_1, self.W_2]))
+        V = tf.multiply(inputs, tf.expand_dims(A_2, axis=2))  # [b,sl,ei]
+
+        attr_1 = tf.nn.softmax(tf.tensordot(V, self.projection_a, axes=(-1, 0)), dim=1)  # [b,1]
+        attr_2 = tf.nn.softmax(tf.tensordot(V, self.projection_b, axes=(-1, 0)), dim=1)  # [b,1]
+
+        h1 = tf.multiply(inputs1, attr_1)  # [b,sl,ei]
+        h2 = tf.multiply(inputs2, attr_2)  # [b,sl,ei]
+
+        h = h1 + h2
+
+        return h
 
 
 class BilinearInteraction(Layer):
@@ -206,3 +294,35 @@ class InteractionCross(Layer):
         attr_score = tf.nn.softmax(tf.tensordot(hi, self.projection_h, axes=(-1, 0)), dim=1)  # [b,1]
         h = tf.multiply(hi, attr_score)  # [b,ei]
         return h
+
+
+class FM(Layer):
+    def __init__(self, **kwargs):
+
+        super(FM, self).__init__(**kwargs)
+
+    def build(self, input_shape):
+        if len(input_shape) != 3:
+            raise ValueError("Unexpected inputs dimensions % d,\
+                             expect to be 3 dimensions" % (len(input_shape)))
+
+        super(FM, self).build(input_shape)  # Be sure to call this somewhere!
+
+    def call(self, inputs, **kwargs):
+
+        if K.ndim(inputs) != 3:
+            raise ValueError(
+                "Unexpected inputs dimensions %d, expect to be 3 dimensions"
+                % (K.ndim(inputs)))
+
+        concated_embeds_value = inputs
+
+        square_of_sum = tf.square(reduce_sum(concated_embeds_value, axis=1, keep_dims=True))
+        sum_of_square = reduce_sum(concated_embeds_value * concated_embeds_value, axis=1, keep_dims=True)
+        cross_term = square_of_sum - sum_of_square
+        cross_term = 0.5 * reduce_sum(cross_term, axis=2, keep_dims=False)
+
+        return cross_term
+
+    def compute_output_shape(self, input_shape):
+        return (None, 1)

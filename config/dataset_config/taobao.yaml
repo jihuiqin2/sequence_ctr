@@ -1,0 +1,16 @@
+taobao:
+  train_file: '../data/taobao/train.csv'
+  test_file: '../data/taobao/test.csv'
+  valid_file: '../data/taobao/valid.csv'
+  item_cate_dict_file: '../data/taobao/item_cate_dict.pkl'  # item->cate字典
+  statical_dict_file: '../data/taobao/statical_dict.pkl'   # 统计
+
+  user_f_num: 1  # 用户特征个数
+  other_seq_num: 0  # 其他序列特征
+  other_f_num: 0   # 处了uid、iid、cid之外的其他特征
+
+  sample_size: 1   # 每个用户采样最后10个
+  seq_max_len: 30  # 历史序列长度   dien中100
+  valid_size: 0.1
+  test_size: 0.1
+  padding_type: 'pre'  # pre|suf  如果序列长度不够，需要补充数据

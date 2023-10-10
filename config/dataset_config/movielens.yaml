@@ -1,0 +1,17 @@
+movielens:
+  train_file: '../data/movielens/train.csv'
+  test_file: '../data/movielens/test.csv'
+  valid_file: '../data/movielens/valid.csv'
+  item_cate_dict_file: '../data/movielens/item_cate_dict.pkl'  # item->cate字典
+  statical_dict_file: '../data/movielens/statical_dict.pkl'   # 统计
+
+  user_f_num: 1  # 用户和上下文特征
+  other_seq_num: 0  # 其他序列特征
+  other_f_num: 0   # 除了uid、iid、cid之外的其他上下文特征
+  label_type: 2    # label是[0]还是[0,1]
+
+  sample_size: 10   # 每个用户采样最后10个
+  seq_max_len: 80  # 历史序列长度
+  valid_size: 0.1
+  test_size: 0.1
+  padding_type: 'pre'  # pre|suf  如果序列长度不够，需要补充数据

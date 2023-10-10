@@ -1,0 +1,52 @@
+newmodel_electronics:
+  model_root: '../checkpoints/electronics_5/'
+  model_id: 'newmodel_electronics'
+  dataset_id: 'electronics_5'
+  model_name: NewModel
+
+  lr: 0.002
+  reg_lambda: 1e-4
+  emb_dim: 18
+  batch_size: 128
+  epochs: 100
+  seed: 8004
+
+  use_neg_seq: True
+  choose_k: 10
+  head_num: 4
+  cross_num: 3  #
+
+newmodel_books:
+  model_root: '../checkpoints/books_5/'
+  model_id: 'newmodel_books'
+  dataset_id: 'books_5'
+  model_name: NewModel
+
+  lr: 0.004
+  reg_lambda: 1e-4
+  emb_dim: 18
+  batch_size: 128
+  epochs: 100
+  seed: 7002
+
+  use_neg_seq: True
+  head_num: 2
+  cross_num: 3
+
+newmodel_beauty:
+  model_root: '../checkpoints/beauty_5/'
+  model_id: 'newmodel_beauty'
+  dataset_id: 'beauty_5'
+  model_name: NewModel
+
+  lr: 0.004
+  reg_lambda: 1e-4
+  emb_dim: 18
+  batch_size: 128
+  epochs: 100
+  seed: 2003
+
+  use_neg_seq: True
+  choose_k: 12
+  head_num: 2
+  cross_num: 3
